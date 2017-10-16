@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.26   	서준식     	 	SSO 로그인을 위한 쿼리 추가
+  2011.09.27    서준식              컬럼 변경 SUB_DN 을  CRTFC_DN_VALUE 로 변경
+  2011.09.28    서준식              컬럼 변경 entrprsmber_id 을  ENTRPRS_MBER_ID 로 변경
+-->
+<sqlMap namespace="LoginUsr">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="loginVO" type="com.develop.housetest.service.impl.LoginVO"/>
+
+	<!-- 로그인 처리를 위한 resultMap -->
+	<resultMap id="login" class="com.develop.housetest.service.impl.LoginVO">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="pass" column="pass" columnIndex="2"/>
+		<result property="name" column="name" columnIndex="3"/>
+		<result property="phone" column="phone" columnIndex="4"/>
+		<result property="email" column="email" columnIndex="5"/>
+	</resultMap>
+	
+	<!-- 일반 로그인 -->
+	<select id="loginDAO.actionLogin" resultMap="login">
+		<!-- 일반회원 -->
+		<isEqual property="userSe" compareValue="GNR">
+			<![CDATA[
+			SELECT id AS id
+			     , name AS name
+			     , pass AS pass
+			     , phone AS phone
+			     , email AS email
+			  FROM test
+			 WHERE id = #id#
+			   AND pass = #pass#
+			]]>
+		</isEqual>
+	</select>
+</sqlMap>
